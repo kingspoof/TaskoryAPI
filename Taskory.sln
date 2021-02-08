@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskory.DAL", "Taskory.DAL\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskory.Logic", "Taskory.Logic\Taskory.Logic.csproj", "{0282E276-78D7-43B9-8B8D-1B4E77B1555E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskory.API", "Taskory.API\Taskory.API.csproj", "{BA125E4A-605D-481E-8263-014DA318B47F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0282E276-78D7-43B9-8B8D-1B4E77B1555E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0282E276-78D7-43B9-8B8D-1B4E77B1555E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0282E276-78D7-43B9-8B8D-1B4E77B1555E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA125E4A-605D-481E-8263-014DA318B47F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA125E4A-605D-481E-8263-014DA318B47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA125E4A-605D-481E-8263-014DA318B47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA125E4A-605D-481E-8263-014DA318B47F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
