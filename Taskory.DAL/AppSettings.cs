@@ -16,7 +16,7 @@ namespace Taskory.DAL
 
             var root = configurationBuilder.Build();
             //_connectionString = root.GetSection("ConnectionString").GetSection("DataConnection").Value;
-            _connectionString = root.GetConnectionString("DataConnection");
+            _connectionString = root.GetConnectionString("DefaultConnection");
             var appSetting = root.GetSection("ApplicationSettings");
         }
         public string ConnectionString
