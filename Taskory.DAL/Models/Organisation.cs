@@ -11,5 +11,6 @@ namespace Taskory.DAL.Models
         public string Name { get; set; }
         public List<User> Users { get; set; }
         public List<User> Administrator { get; set; }
+        public List<Task> Tasks { get; set; }
 }
 }
