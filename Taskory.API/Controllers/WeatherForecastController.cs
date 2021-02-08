@@ -26,6 +26,9 @@ namespace Taskory.API.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+
+            var n = new Taskory.Logic.Test();
+            
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
