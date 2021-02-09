@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskory.DAL;
 
 namespace Taskory.DAL.Migrations
 {
     [DbContext(typeof(TaskoryDBContext))]
-    partial class TaskoryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210208150405_AddedOrganisationsToTasks")]
+    partial class AddedOrganisationsToTasks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,15 +44,10 @@ namespace Taskory.DAL.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("AdministratorID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("AdministratorID");
 
                     b.ToTable("Organisations");
                 });
@@ -94,9 +91,6 @@ namespace Taskory.DAL.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("AuthentificationTempelate")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -109,22 +103,18 @@ namespace Taskory.DAL.Migrations
                     b.Property<int?>("OrganisationID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("OrganisationID1")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("LoginID");
 
                     b.HasIndex("OrganisationID");
 
+                    b.HasIndex("OrganisationID1");
+
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Taskory.DAL.Models.Organisation", b =>
-                {
-                    b.HasOne("Taskory.DAL.Models.User", "Administrator")
-                        .WithMany()
-                        .HasForeignKey("AdministratorID");
-
-                    b.Navigation("Administrator");
                 });
 
             modelBuilder.Entity("Taskory.DAL.Models.Task", b =>
@@ -141,14 +131,20 @@ namespace Taskory.DAL.Migrations
                         .HasForeignKey("LoginID");
 
                     b.HasOne("Taskory.DAL.Models.Organisation", null)
-                        .WithMany("Users")
+                        .WithMany("Administrator")
                         .HasForeignKey("OrganisationID");
+
+                    b.HasOne("Taskory.DAL.Models.Organisation", null)
+                        .WithMany("Users")
+                        .HasForeignKey("OrganisationID1");
 
                     b.Navigation("Login");
                 });
 
             modelBuilder.Entity("Taskory.DAL.Models.Organisation", b =>
                 {
+                    b.Navigation("Administrator");
+
                     b.Navigation("Tasks");
 
                     b.Navigation("Users");

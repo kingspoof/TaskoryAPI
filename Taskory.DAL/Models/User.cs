@@ -11,5 +11,6 @@ namespace Taskory.DAL.Models
         public string Name { get; set; }
         public string FirstName { get; set; }
         public Login Login { get; set; }
+        public string AuthentificationTempelate { get; set; }
     }
 }
