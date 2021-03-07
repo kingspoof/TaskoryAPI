@@ -7,11 +7,13 @@ using Taskory.DAL.Models;
 
 namespace Taskory.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Organisations")]
     public class OrganisationsController : Controller
     {
         private ReturnCodes RequiredPermission = ReturnCodes.SA;
-        // GET: api/values
+
+
+        // GET: api/values -> Get All Organisations
         [HttpGet]
         public IEnumerable<Organisation> Get([FromBody] DTO value)
         {
@@ -22,7 +24,7 @@ namespace Taskory.API.Controllers
             return null;
         }
 
-        // GET api/values/5
+        // GET api/values/5 -> Get the Organisation with id
         [HttpGet("{id}")]
         public Organisation Get(int id, [FromBody] DTO value)
         {
@@ -33,7 +35,7 @@ namespace Taskory.API.Controllers
             return null;
         }
 
-        // POST api/values
+        // POST api/values -> Create Organisation
         [HttpPost]
         public void Post([FromBody] OrganisationDTO value)
         {
@@ -44,7 +46,7 @@ namespace Taskory.API.Controllers
                 HttpContext.Response.StatusCode = 403;
         }
 
-        // PUT api/values/5
+        // PUT api/values/5-> Alter Organisation
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] OrganisationDTO value)
         {
@@ -54,7 +56,7 @@ namespace Taskory.API.Controllers
                 HttpContext.Response.StatusCode = 403;
         }
 
-        // DELETE api/values/5
+        // DELETE api/values/5 -> Delete Organisation
         [HttpDelete("{id}")]
         public void Delete(int id, [FromBody] DTO value)
         {

@@ -12,5 +12,6 @@ namespace Taskory.DAL.Models
         public User Administrator { get; set; }
         public List<User> Users { get; set; }
         public List<Task> Tasks { get; set; }
+        public bool Deleted { get; set; }
     }
 }

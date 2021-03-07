@@ -12,9 +12,7 @@ namespace Taskory.DAL
         {
         }
 
-        public DbSet<Login> Logins { get; set; }
         public DbSet<Organisation> Organisations { get; set; }
-        public DbSet<Task> Tasks { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }
