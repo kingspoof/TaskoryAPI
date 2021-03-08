@@ -30,7 +30,10 @@ namespace Taskory.Logic
         {
             //TODO -> check if that even creates the task
             using TaskoryDBContext context = new TaskoryDBContext();
-            context.Organisations.Where(o => o.ID == organisationID).FirstOrDefault().Tasks.Add(task);
+            var org = context.Organisations.Where(o => o.ID == organisationID).FirstOrDefault();
+            if (org.Tasks == null)
+                org.Tasks = new List<Task>();
+            org.Tasks.Add(task);
             context.SaveChanges();
         }
 

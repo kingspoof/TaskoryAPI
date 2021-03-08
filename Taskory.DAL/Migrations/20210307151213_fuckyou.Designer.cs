@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskory.DAL;
 
 namespace Taskory.DAL.Migrations
 {
     [DbContext(typeof(TaskoryDBContext))]
-    partial class TaskoryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210307151213_fuckyou")]
+    partial class fuckyou
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,9 +125,6 @@ namespace Taskory.DAL.Migrations
 
                     b.Property<int?>("OrganisationID")
                         .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 

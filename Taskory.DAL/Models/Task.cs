@@ -13,7 +13,7 @@ namespace Taskory.DAL.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool Deleted { get; set; }
-        public User User { get; set; }
+        public int UserID { get; set; }
 
     }
 }

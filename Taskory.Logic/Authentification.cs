@@ -15,24 +15,18 @@ namespace Taskory.Logic
             return $"{primary}-[1234]-{secondary}";
         }
 
-        public static ReturnCodes CheckTransmitionCode(DTO dto)
+        public static ReturnCodes CheckTransmitionCode(string transponderCode)
         {
             //TODO rewortk the authorisation
-            string[] parts = dto.TransmitionCode.Split("-");
-            if (parts.Length == 3)
-            {
-                int primary = Convert.ToInt32(parts[0]);
-                DateTime SentAt = Convert.ToDateTime(parts[1]);
-                int secondary = Convert.ToInt32(parts[2]);
 
-                if (primary > 0 && primary < 4 && SentAt > DateTime.Now.AddMinutes(-5))
-                    if (primary == (secondary / dto.TransmitionUser))
-                        return (ReturnCodes)primary;
-                
-            }
-
-            return (ReturnCodes)1;
+            return ReturnCodes.SA;
             
+        }
+
+        public static bool HasPermission(string transponderCode, ReturnCodes requiredPermission)
+        {
+            ReturnCodes userpermission = CheckTransmitionCode(transponderCode);
+            return true;
         }
     }
 }

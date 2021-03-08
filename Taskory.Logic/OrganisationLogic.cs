@@ -13,7 +13,13 @@ namespace Taskory.Logic
         public static Organisation CreateOrganisation(Organisation org)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
-            context.Add(org);
+
+            if (org.Tasks == null)
+                org.Tasks = new List<Task>();
+            if (org.Users == null)
+                org.Users = new List<User>();
+
+            context.Organisations.Add(org);
             context.SaveChanges();
             return org;
         }

@@ -19,9 +19,9 @@ namespace Taskory.API.Controllers
 
         // GET: api/values -> Get All Tasks of Organisation
         [HttpGet("{organisationID}")]
-        public IEnumerable<Task> Get(int organisationID, [FromBody] DTO taskDTO)
+        public IEnumerable<Task> Get(int organisationID, string transpondercode)
         {
-            if (Authentification.CheckTransmitionCode(taskDTO) == ReturnCodes.User)
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.User))
                 return TaskLogic.GET(organisationID);
             else
                 HttpContext.Response.StatusCode = 403;
@@ -29,9 +29,9 @@ namespace Taskory.API.Controllers
         }
 
         [HttpGet("{organisationID}/{taskID}")]
-        public Task Get(int organisationID, int taskID, [FromBody] DTO taskDTO)
+        public Task Get(int organisationID, int taskID, string transpondercode)
         {
-            if (Authentification.CheckTransmitionCode(taskDTO) == ReturnCodes.User)
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.User))
                 return TaskLogic.GET(organisationID, taskID);
             else
                 HttpContext.Response.StatusCode = 403;
@@ -40,10 +40,10 @@ namespace Taskory.API.Controllers
 
         // POST api/values/1 -> Create Task in organisation
         [HttpPost("{organisationID}")]
-        public void Post(int organisationID, [FromBody] TaskDTO taskDTO)
+        public void Post(int organisationID, string transpondercode, [FromBody] Task value)
         {
-            if (Authentification.CheckTransmitionCode(taskDTO.TransmitionVerification) == ReturnCodes.Admin)
-                TaskLogic.Create(organisationID, taskDTO.TransmitionTask);
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.Admin))
+                TaskLogic.Create(organisationID, value);
             else
                 HttpContext.Response.StatusCode = 403;
 
@@ -51,19 +51,19 @@ namespace Taskory.API.Controllers
 
         // PUT api/values/5 -> Edit task in organisation
         [HttpPut("{organisationID}")]
-        public void Put(int organisationID, [FromBody] TaskDTO taskDTO)
+        public void Put(int organisationID, string transpondercode, [FromBody] Task value)
         {
-            if (Authentification.CheckTransmitionCode(taskDTO.TransmitionVerification) == ReturnCodes.User)
-                TaskLogic.UpdateTask(organisationID, taskDTO.TransmitionTask);
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.User))
+                TaskLogic.UpdateTask(organisationID, value);
             else
                 HttpContext.Response.StatusCode = 403;
         }
 
         // DELETE api/values/5/1 -> Delete task in organisation
         [HttpDelete("{organisationID}/{taskID}")]
-        public void Delete(int organisationID, int taskID, [FromBody] DTO taskDTO)
+        public void Delete(int organisationID, int taskID, string transpondercode)
         {
-            if (Authentification.CheckTransmitionCode(taskDTO) == ReturnCodes.Admin)
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.Admin))
                 TaskLogic.DeleteTask(organisationID, taskID);
             else
                 HttpContext.Response.StatusCode = 403;

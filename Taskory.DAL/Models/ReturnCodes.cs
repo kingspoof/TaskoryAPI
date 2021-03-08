@@ -3,9 +3,8 @@ namespace Taskory.DAL.Models
 {
     public enum ReturnCodes
     {
-       Admin = 1,
-       User = 2,
-       Unrecognised = 3,
-       SA = 402,
+       User = 1,
+       Admin = 2,
+       SA = 3,
     }
 }

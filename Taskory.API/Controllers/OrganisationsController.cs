@@ -15,9 +15,9 @@ namespace Taskory.API.Controllers
 
         // GET: api/values -> Get All Organisations
         [HttpGet]
-        public IEnumerable<Organisation> Get([FromBody] DTO value)
+        public IEnumerable<Organisation> Get(string transpondercode)
         {
-            if (Authentification.CheckTransmitionCode(value) == RequiredPermission)
+            if (Authentification.HasPermission(transpondercode, RequiredPermission))
                 return OrganisationLogic.GetOrganisation();
             else
                 HttpContext.Response.StatusCode = 403;
@@ -26,9 +26,9 @@ namespace Taskory.API.Controllers
 
         // GET api/values/5 -> Get the Organisation with id
         [HttpGet("{id}")]
-        public Organisation Get(int id, [FromBody] DTO value)
+        public Organisation Get(int id, string transpondercode)
         {
-            if (Authentification.CheckTransmitionCode(value) == RequiredPermission)
+            if (Authentification.HasPermission(transpondercode, RequiredPermission))
                 return OrganisationLogic.GetOrganisation(id);
             else
                 HttpContext.Response.StatusCode = 403;
@@ -37,30 +37,30 @@ namespace Taskory.API.Controllers
 
         // POST api/values -> Create Organisation
         [HttpPost]
-        public void Post([FromBody] OrganisationDTO value)
+        public void Post(string transpondercode, [FromBody] Organisation value)
         {
             //if(Authentification.)
-            if (Authentification.CheckTransmitionCode(value.TransmitionVerification) == RequiredPermission)
-                OrganisationLogic.CreateOrganisation(value.TransmitionOrganisation);
+            if (Authentification.HasPermission(transpondercode, RequiredPermission))
+                OrganisationLogic.CreateOrganisation(value);
             else
                 HttpContext.Response.StatusCode = 403;
         }
 
         // PUT api/values/5-> Alter Organisation
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] OrganisationDTO value)
+        public void Put(int id,string transpondercode, [FromBody] Organisation value)
         {
-            if (Authentification.CheckTransmitionCode(value.TransmitionVerification) == RequiredPermission)
-                OrganisationLogic.UpdateOrganisation(id, value.TransmitionOrganisation);
+            if (Authentification.HasPermission(transpondercode, RequiredPermission))
+                OrganisationLogic.UpdateOrganisation(id, value);
             else
                 HttpContext.Response.StatusCode = 403;
         }
 
         // DELETE api/values/5 -> Delete Organisation
         [HttpDelete("{id}")]
-        public void Delete(int id, [FromBody] DTO value)
+        public void Delete(int id, string transpondercode)
         {
-            if (Authentification.CheckTransmitionCode(value) == RequiredPermission)
+            if (Authentification.HasPermission(transpondercode, RequiredPermission))
                 OrganisationLogic.DeleteOrganisation(id);
             else
                 HttpContext.Response.StatusCode = 403;
