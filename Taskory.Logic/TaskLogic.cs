@@ -53,8 +53,7 @@ namespace Taskory.Logic
         {
             using TaskoryDBContext context = new TaskoryDBContext();
             var target = context.Organisations.Where(o => o.ID == organisationID).FirstOrDefault().Tasks.Where(t => t.ID == taskID).FirstOrDefault();
-            context.Organisations.Where(e => e.ID == organisationID).FirstOrDefault()
-                .Tasks.Remove(target);
+            target.Deleted = true;
             context.SaveChanges();
                 
         }

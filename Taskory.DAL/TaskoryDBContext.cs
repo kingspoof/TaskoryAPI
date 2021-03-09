@@ -10,6 +10,7 @@ namespace Taskory.DAL
         public TaskoryDBContext()
             : base(new DbContextOptionsBuilder<TaskoryDBContext>().UseSqlServer("Server=localhost;Database=Taskory;User Id=sa;Password=Test1234").Options)
         {
+            this.Database.EnsureCreated();
         }
 
         public DbSet<Organisation> Organisations { get; set; }

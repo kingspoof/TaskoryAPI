@@ -8,10 +8,13 @@ namespace Taskory.DAL.Models
     {
         [Key]
         public int ID { get; set; }
-        public string Username { get; set; }
+
         public string Name { get; set; }
         public string FirstName { get; set; }
-        public Login Login { get; set; }
+
+        public string Username { get; set; }
+        public string Password { get; set; }
+
         public string AuthentificationTempelate { get; set; }
         public bool Deleted { get; set; }
 
@@ -19,6 +22,7 @@ namespace Taskory.DAL.Models
         public bool IsValid =>
             !String.IsNullOrEmpty(Username) &&
             !String.IsNullOrEmpty(Name) &&
-            !String.IsNullOrEmpty(FirstName);
+            !String.IsNullOrEmpty(FirstName) &&
+            !String.IsNullOrEmpty(Password);
     }
 }

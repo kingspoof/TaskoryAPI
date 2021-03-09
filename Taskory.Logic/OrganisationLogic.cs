@@ -50,7 +50,11 @@ namespace Taskory.Logic
         public static void DeleteOrganisation(int id)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
-            context.Organisations.Remove(context.Organisations.Where(o => o.ID == id).FirstOrDefault());
+            if(context.Organisations.Any(o => o.ID == id))
+            {
+                var org = context.Organisations.Where(o => o.ID == id).FirstOrDefault();
+                org.Deleted = true;
+            }
             context.SaveChanges();
         }
     }

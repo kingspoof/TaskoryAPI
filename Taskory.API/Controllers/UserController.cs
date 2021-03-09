@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Taskory.Logic;
+using Taskory.DAL.Models;
+using System.Linq;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,34 +14,47 @@ namespace Taskory.API.Controllers
     {
         // GET: api
         [HttpGet]
-        public IEnumerable<bool> Get()
+        public string Get(string username, string password)
         {
-            return new string[] { "value1", "value2" };
+            return UserLogic.CheckLogin(username, password);
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(string username)
+        [HttpGet("{organisationID}")]
+        public IEnumerable<User> Get(int organisationID,string transpondercode)
         {
-            return "value";
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.User))
+                return UserLogic.GetUser(organisationID);
+            else
+                HttpContext.Response.StatusCode = 403;
+            return null;
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(int organisationID,string transpondercode, [FromBody] User user)
         {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.User))
+            {
+                var n = UserLogic.CreateUser(organisationID, user);
+                HttpContext.Response.StatusCode = n switch
+                {
+                    "420" => 420,
+                    _ => 200,
+                };
+            }
+            else
+                HttpContext.Response.StatusCode = 403;
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, string transpondercode)
         {
+            if (Authentification.HasPermission(transpondercode, ReturnCodes.User))
+                UserLogic.DeleteUser(id);
+            else
+                HttpContext.Response.StatusCode = 403;
         }
     }
 }
