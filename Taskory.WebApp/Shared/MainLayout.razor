@@ -1,17 +1,27 @@
 ﻿@inherits LayoutComponentBase
+@inject LoginState loginstate;
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+@if (loginstate.IsLoggedIn)
+{
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <div class="content px-4">
-            @Body
+        <div class="main">
+            <div class="content px-4">
+                @Body
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    @Body
+}
+
+@code{
+    public bool logedin = false;
+    public string transmitioncode = "";
+}

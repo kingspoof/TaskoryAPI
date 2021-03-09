@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Taskory.Logic;
 using Taskory.DAL.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

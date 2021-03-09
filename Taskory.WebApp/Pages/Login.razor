@@ -1,0 +1,46 @@
+﻿@page "/"
+@inject LoginState loginstate;
+@inject NavigationManager Navigation;
+
+<h1>login</h1>
+
+<label>@notes</label>
+<input type="text" @bind="username" />
+<input type="password" @bind="password" />
+<button class="btn btn-primary" @onclick="login">test</button>
+
+
+@code {
+    private string notes;
+    private string username;
+    private string password;
+    private int count;
+
+    private async System.Threading.Tasks.Task login()
+    {
+
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:20178/");
+
+        var response = await client.GetAsync($"api/User?username={username}&password={password}");
+        Console.Write(response.Content.Headers);
+        var transmitioncode = await response.Content.ReadAsStringAsync();
+        Console.WriteLine();
+
+        if (String.IsNullOrEmpty(transmitioncode) || transmitioncode.ToLower().Equals("false"))
+            notes = $"login failed try again {count++}";
+        else
+        {
+            loginstate.Username = username;
+            loginstate.IsLoggedIn = true;
+            loginstate.IsAdmin = Convert.ToInt32(transmitioncode.Split("-")[0]) % 79 == 0;
+            loginstate.UserID = Convert.ToInt32(transmitioncode.Split("-")[0]) / 79;
+            loginstate.Transmitioncode = transmitioncode;
+            notes = "login completed";
+
+            Navigation.NavigateTo("/Index");
+        }
+
+
+    }
+}

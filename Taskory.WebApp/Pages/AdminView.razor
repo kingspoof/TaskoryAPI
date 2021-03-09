@@ -1,0 +1,39 @@
+﻿@page "/adminview"
+@inject LoginState loginstate;
+
+
+
+
+
+@if (loginstate.IsAdmin)
+{
+    @if (org == null)
+    {
+        <p><em>Loading ...</em></p>
+    }
+    else
+    {
+        <h3>@org.Name</h3>
+        @*Edit Tasks in Organisation*@
+        <i>Edit Tasks in Organisation</i>
+        @*Edit Users in Organisations*@
+        <i>Edit User in Organisation</i>
+
+    }
+}
+@code {
+    private Organisation org;
+
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        Console.WriteLine("Doing something");
+
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:20178/");
+
+        var response = await client.GetAsync($"api/Organisations/{loginstate.UserID}");
+        org = await response.Content.ReadFromJsonAsync<Organisation>();
+        Console.WriteLine(org);
+    }
+}

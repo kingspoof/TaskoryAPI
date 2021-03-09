@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Taskory.DAL;
 using Taskory.DAL.Models;
 
@@ -25,10 +26,10 @@ namespace Taskory.Logic
         }
 
         //get orgnisation
-        public static Organisation GetOrganisation(int id)
+        public static Organisation GetOrganisationFromUser(int id)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
-            return context.Organisations.Where(e => e.ID == id).FirstOrDefault();
+            return context.Organisations.Include("Users").Include("Administrator").SingleOrDefault(o => o.Administrator.ID == id || o.Users.Any(u => u.ID == id));
         }
         public static IEnumerable<Organisation> GetOrganisation()
         {

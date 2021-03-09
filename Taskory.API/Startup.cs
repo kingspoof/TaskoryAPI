@@ -19,6 +19,7 @@ namespace Taskory.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -31,6 +32,14 @@ namespace Taskory.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Taskory.API", Version = "v1" });
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("p1",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost");
+                    });
             });
         }
 
@@ -47,6 +56,13 @@ namespace Taskory.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseAuthorization();
 

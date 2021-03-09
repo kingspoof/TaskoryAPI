@@ -24,12 +24,12 @@ namespace Taskory.API.Controllers
             return null;
         }
 
-        // GET api/values/5 -> Get the Organisation with id
+        // GET api/values/5 -> Get the Organisation from userid
         [HttpGet("{id}")]
         public Organisation Get(int id, string transpondercode)
         {
             if (Authentification.HasPermission(transpondercode, RequiredPermission))
-                return OrganisationLogic.GetOrganisation(id);
+                return OrganisationLogic.GetOrganisationFromUser(id);
             else
                 HttpContext.Response.StatusCode = 403;
             return null;
