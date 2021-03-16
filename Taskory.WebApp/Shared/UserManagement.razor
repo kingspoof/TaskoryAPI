@@ -1,0 +1,118 @@
+﻿@inject LoginState loginstate;
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-7 float-left">
+                    <table class="table table-hover table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (User n in o.Users)
+                            {
+                                @if (!n.Deleted)
+                                {
+                                    <tr @onclick="() => UserClicked(n.ID)">
+                                        <td>@n.FirstName @n.Name </td>
+                                        <td>@n.Username</td>
+                                        <td>@((Convert.ToInt32(n.AuthentificationTempelate.Split("-")[0]) / 79 == n.ID)? "Y" : "N")</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-12 col-md-5" hidden="@HideEditWindows">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="fw-light">Edit user</p>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Name">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">FirstName</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.FirstName">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Username">
+                            </div>
+                            <button type="button" @onclick="DeleteCurrentUser" class="btn btn-info">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" @onclick="SaveChanges" class="btn btn-info pull-right">Save</button>
+    </div>
+</div>
+<i>Note that deleting a user is instantaniously and the rest has to be saved.</i>
+
+
+
+@code {
+    [Parameter]
+    public Organisation o { get; set; }
+
+    private int currentSelectedUser { get; set; }
+    private bool HideEditWindows = true;
+    private bool CreateUser = false;
+
+
+    private User targetuser { get; set; }
+
+    private void UserClicked(int n)
+    {
+        Console.WriteLine("User Clicked => " + n);
+        currentSelectedUser = n;
+        HideEditWindows = false;
+        this.targetuser = o.Users.FirstOrDefault(i => i.ID == n);
+    }
+
+    private void StartUserCreation()
+    {
+
+    }
+
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        //Make a copy of o for saving prposes
+        targetuser = o.Users.FirstOrDefault();
+    }
+
+    private async System.Threading.Tasks.Task DeleteCurrentUser()
+    {
+        targetuser.Deleted = true;
+        HttpClient client = new HttpClient();
+        await client.DeleteAsync($"https://localhost:20178/api/User/{targetuser.ID}?transpondercode={loginstate.Transmitioncode}");
+    }
+
+    private async System.Threading.Tasks.Task SaveChanges()
+    {
+        //send changes to the api with the organisation as json
+        HttpClient client = new HttpClient();
+
+
+        //save changes foreach user
+
+        var json = new StringContent(System.Text.Json.JsonSerializer.Serialize(o));
+        Console.WriteLine(json);
+        var result = client.PutAsJsonAsync($"https://localhost:20178/api/Organisations/{o.ID}?transpondercode={loginstate.UserID}", o).Result;
+        Console.WriteLine(result);
+    }
+}

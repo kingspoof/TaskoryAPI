@@ -6,5 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Taskory.DAL\Taskory.DAL.csproj" />
+    <ProjectReference Include="..\Taskory.Encryption\Taskory.Encryption.csproj" />
   </ItemGroup>
 </Project>

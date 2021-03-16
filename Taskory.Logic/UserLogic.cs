@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Taskory.Encryption;
 
 namespace Taskory.Logic
 {
@@ -16,6 +17,10 @@ namespace Taskory.Logic
             if (context.Organisations.Any(o => o.ID == organisationID))
                 if (user.IsValid && !UsernameExists(user.Username))
                 {
+
+                    //encrypt Password
+                    user.Password = Encryption.Encryption.UsingMD5(user.Password);
+
                     //create user
                     user.Username = user.Username.ToLower();
                     user.AuthentificationTempelate = Authentification.GenerateTransmitionCode(user);
@@ -40,6 +45,7 @@ namespace Taskory.Logic
         public static string CheckLogin(string username, string password)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
+            password = Encryption.Encryption.UsingMD5(password);
             var user = context.Users.Where(u => u.Username.Equals(username) && u.Password.Equals(password));
             if (user.Any())
             {
@@ -68,6 +74,7 @@ namespace Taskory.Logic
             {
                 var user = context.Users.Where(u => u.ID == id).FirstOrDefault();
                 user.Deleted = true;
+                context.Update(user);
                 context.SaveChanges();
                 return "Deleted";
             }

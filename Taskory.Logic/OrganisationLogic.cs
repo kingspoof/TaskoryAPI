@@ -41,17 +41,15 @@ namespace Taskory.Logic
         public static void UpdateOrganisation(int id, Organisation org)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
-            {
-                var target = context.Organisations.Where(e => e.ID == id).FirstOrDefault();
-                target = org == null ? target : org;
-            }
+            context.Update(org);
+            context.SaveChanges();
         }
 
         //delete organisation
         public static void DeleteOrganisation(int id)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
-            if(context.Organisations.Any(o => o.ID == id))
+            if (context.Organisations.Any(o => o.ID == id))
             {
                 var org = context.Organisations.Where(o => o.ID == id).FirstOrDefault();
                 org.Deleted = true;
