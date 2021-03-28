@@ -1,5 +1,133 @@
-﻿<h6>Manage your Tasks</h6>
+﻿@inject LoginState loginstate;
+
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="card">
+                        <div class="card-body">
+                            @foreach (var t in o.Tasks)
+                            {
+                                <div class="card">
+                                    <div class="card-body">
+                                        @t.Name
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="card" hidden="@HideCreate">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <p class="fw-light">Create Task</p>
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">*Name</span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.Name">
+                                </div>
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Description</span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.Descriprion">
+                                </div>
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">*Repeat after n days</span>
+                                    </div>
+                                    <input type="number" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.RepeatAfterXDays">
+                                </div>
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">*Start</span>
+                                    </div>
+                                    <input type="date" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.StartDate">
+                                </div>
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">End</span>
+                                    </div>
+                                    <input type="date" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.EndDate">
+                                </div>
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">*User</span>
+                                    </div>
+                                    <input type="number" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.UserID">
+                                </div>
+                                <button class="btn btn-primary" @onclick="SaveTask">take</button>
+                                <button class="btn btn-secondary" @onclick="DiscardTask">leave</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button class="btn btn-info">Save</button>
+                    <button class="btn btn-secondary" @onclick="StartTaskCreation">Create</button>
+                    <button class="btn btn-dark">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @code {
+    [Parameter]
+    public Organisation o { get; set; }
 
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        if (o.Tasks == null)
+            o.Tasks = new List<WebApp.Task>();
+        TaskToCreate = new WebApp.Task();
+    }
+
+    
+    #region CreateTask
+    public Taskory.WebApp.Task TaskToCreate { get; set; }
+    private string CreateMessage = "";
+    public bool HideCreate = true;
+
+    private void StartTaskCreation()
+    {
+        TaskToCreate = new WebApp.Task();
+        HideCreate = false;
+    }
+    private void SaveTask()
+    {
+
+        Console.WriteLine("1 -> " + !String.IsNullOrEmpty(TaskToCreate.Name));
+        Console.WriteLine("2 -> " + (TaskToCreate.RepeatAfterXDays > 0).ToString());
+        Console.WriteLine("3 -> " + (TaskToCreate.StartDate > DateTime.Now.AddMonths(-5)).ToString());
+        Console.WriteLine("4 -> " + (o.Users.Any(u => u.ID == TaskToCreate.ID)).ToString());
+
+
+        if (!String.IsNullOrEmpty(TaskToCreate.Name)
+            && TaskToCreate.RepeatAfterXDays > 0
+            && TaskToCreate.StartDate > DateTime.Now.AddMonths(-5)
+            && o.Users.Any(u => u.ID == TaskToCreate.ID))
+        {
+            o.Tasks.Add(TaskToCreate);
+        }
+        else
+        {
+            CreateMessage = "Fille required field!";
+        }
+    }
+    private void DiscardTask()
+    {
+        HideCreate = true;
+        TaskToCreate = new WebApp.Task();
+    }
+    #endregion
 }

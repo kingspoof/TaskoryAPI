@@ -51,16 +51,48 @@
                                 </div>
                                 <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Username">
                             </div>
-                            <button type="button" @onclick="DeleteCurrentUser" class="btn btn-info">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5" hidden="@HideCreationWindow">
+                    <p class="fw-light">Create User</p>
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="fw-light">Edit user</p>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Name">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">FirstName</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.FirstName">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Username">
+                            </div>
+                            <div>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Password">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <button type="button" @onclick="SaveChanges" class="btn btn-info pull-right">Save</button>
+        <button type="button" @onclick="StartUserCreation" class="btn btn-secondary pull-right" disabled>Create</button>
+        <button type="button" @onclick="DeleteCurrentUser" class="btn btn-dark pull-right">Delete</button>
     </div>
 </div>
-<i>Note that deleting a user is instantaniously and the rest has to be saved.</i>
 
 
 
@@ -70,7 +102,7 @@
 
     private int currentSelectedUser { get; set; }
     private bool HideEditWindows = true;
-    private bool CreateUser = false;
+    private bool HideCreationWindow = true;
 
 
     private User targetuser { get; set; }
@@ -80,14 +112,20 @@
         Console.WriteLine("User Clicked => " + n);
         currentSelectedUser = n;
         HideEditWindows = false;
+        HideCreationWindow = true;
         this.targetuser = o.Users.FirstOrDefault(i => i.ID == n);
     }
 
     private void StartUserCreation()
     {
-
+        targetuser = new User();
+        HideCreationWindow = false;
     }
 
+    private string CreatePassword()
+    {
+        return "";
+    }
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
@@ -98,8 +136,10 @@
     private async System.Threading.Tasks.Task DeleteCurrentUser()
     {
         targetuser.Deleted = true;
-        HttpClient client = new HttpClient();
-        await client.DeleteAsync($"https://localhost:20178/api/User/{targetuser.ID}?transpondercode={loginstate.Transmitioncode}");
+        HideEditWindows = true;
+        @*
+            HttpClient client = new HttpClient();
+            await client.DeleteAsync($"https://localhost:20178/api/User/{targetuser.ID}?transpondercode={loginstate.Transmitioncode}");*@
     }
 
     private async System.Threading.Tasks.Task SaveChanges()
@@ -107,12 +147,12 @@
         //send changes to the api with the organisation as json
         HttpClient client = new HttpClient();
 
+        HideEditWindows = true;
 
         //save changes foreach user
-
         var json = new StringContent(System.Text.Json.JsonSerializer.Serialize(o));
         Console.WriteLine(json);
-        var result = client.PutAsJsonAsync($"https://localhost:20178/api/Organisations/{o.ID}?transpondercode={loginstate.UserID}", o).Result;
+        var result = client.PutAsJsonAsync($"https://localhost:20178/api/Organisations/{o.ID}?transpondercode={loginstate.UserID}", o);
         Console.WriteLine(result);
     }
 }
