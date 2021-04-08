@@ -41,11 +41,13 @@ namespace Taskory.Logic
                     //give user a new authentificationtempelate if he does not already have one
                     string userid = context.Users.Where(u => u.Username.ToLower().Equals(user.Username.ToLower()))?.FirstOrDefault().ID.ToString();
                     var targetuser = context.Users.FirstOrDefault(u => u.ID == Convert.ToInt32(userid));
-                    if(targetuser != null)
-                        if(targetuser.AuthentificationTempelate.StartsWith("79"))
+                    var temp = targetuser.AuthentificationTempelate;
+                    targetuser.AuthentificationTempelate = $"{Convert.ToInt32(userid)}-[1234]-{organisationID}";
+
+                    if (targetuser != null && !String.IsNullOrEmpty(temp))
+                        if (temp.StartsWith("79"))
                             targetuser.AuthentificationTempelate = $"{Convert.ToInt32(userid) * 79}-[1234]-{organisationID}";
-                        else
-                        targetuser.AuthentificationTempelate =  $"{userid}-[1234]-{organisationID}";
+
 
                     //save changes and return the authentification tempelate
                     context.Users.Update(targetuser);

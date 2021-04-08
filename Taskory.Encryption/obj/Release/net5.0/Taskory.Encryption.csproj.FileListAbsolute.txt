@@ -10,3 +10,15 @@
 /Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.dll
 /Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Encryption/obj/Release/net5.0/ref/Taskory.Encryption.dll
 /Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.pdb
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/bin/Release/net5.0/Taskory.Encryption.deps.json
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/bin/Release/net5.0/Taskory.Encryption.dll
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/bin/Release/net5.0/ref/Taskory.Encryption.dll
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/bin/Release/net5.0/Taskory.Encryption.pdb
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.csprojAssemblyReference.cache
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.GeneratedMSBuildEditorConfig.editorconfig
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.AssemblyInfoInputs.cache
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.AssemblyInfo.cs
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.csproj.CoreCompileInputs.cache
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.dll
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/ref/Taskory.Encryption.dll
+/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/Release/net5.0/Taskory.Encryption.pdb

@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row">
-        @foreach (WebApp.Task t in o.Tasks.Where(t => t.UserID == loginstate.UserID).OrderBy(t => t.StartDate))
+        @foreach (WebApp.Task t in o.Tasks.Where(t => t.UserID == loginstate.UserID && !t.Deleted).OrderBy(t => t.StartDate))
         {
             @if (t.StartDate >= DateTime.Now)
             {

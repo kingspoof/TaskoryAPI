@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
-  <IisApp path="/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.API/obj/Release/net5.0/PubTmp/Out/" />
+  <IisApp path="/Users/lucienkaser/Development/Taskory/Taskory.API/obj/Release/net5.0/PubTmp/Out/" />
 </sitemanifest>

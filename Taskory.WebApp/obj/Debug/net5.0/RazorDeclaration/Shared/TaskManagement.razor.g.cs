@@ -13,77 +13,77 @@ namespace Taskory.WebApp.Shared
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 1 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 2 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using System.Net.Http.Json;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 3 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 4 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 5 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 6 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 7 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 8 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/_Imports.razor"
+#line 10 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/_Imports.razor"
 using Taskory.WebApp.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/Shared/TaskManagement.razor"
+#line 2 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/Shared/TaskManagement.razor"
 using Microsoft.Extensions.Configuration;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/Shared/TaskManagement.razor"
+#line 3 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/Shared/TaskManagement.razor"
 using Taskory.WebApp;
 
 #line default
@@ -97,7 +97,7 @@ using Taskory.WebApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 120 "/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp/Shared/TaskManagement.razor"
+#line 119 "/Users/lucienkaser/Development/Taskory/Taskory.WebApp/Shared/TaskManagement.razor"
        
     [Parameter]
     public Organisation o { get; set; }

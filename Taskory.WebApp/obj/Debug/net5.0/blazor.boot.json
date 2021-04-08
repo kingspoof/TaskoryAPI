@@ -202,11 +202,11 @@
       "mscorlib.dll": "sha256-Fi+LybwHL\/VGD\/09OxxtYlT6exn9xVU+LdojZ9juR2c=",
       "netstandard.dll": "sha256-P8xX0ad1hKyWWbBxiXl3cYokFlDiuXwp3pqoYatH0kk=",
       "System.Private.CoreLib.dll": "sha256-2km83sNUTrumGJYdDzsN8RnJqv00vKWLCCh0UGajTB4=",
-      "Taskory.WebApp.dll": "sha256-4EbejgEL8rDxJocCQyuOubHyD1JYJD10YZl4ASFDAoY="
+      "Taskory.WebApp.dll": "sha256-rywe5pCH6mk3qpPi76fk+m+Qltk2gUXH8DBsfkRFIoo="
     },
     "lazyAssembly": null,
     "pdb": {
-      "Taskory.WebApp.pdb": "sha256-1oKIm2ziu\/5qOwpDkj\/paFDaQttxerKBwOicaAoXbYg="
+      "Taskory.WebApp.pdb": "sha256-BV8yNi2C26eAJbPyC08YfuNgfgDvezhDfyDW6cThNHI="
     },
     "runtime": {
       "dotnet.timezones.blat": "sha256-ibxaSjW7s3aLVssChknhzCpgMTHGu4D48Q9OLP3dfe8=",

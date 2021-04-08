@@ -5,39 +5,46 @@
 @inject IConfiguration configuration;
 @inject LoginState loginstate;
 
-<h3>@oid</h3>
-
-<div class="card">
-    <div class="card-body">
-        <p class="fw-light">Create User</p>
-        <i style="color:red;">@createMessage</i>
-        <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
-            </div>
-            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Name">
+<div class="container">
+    <div class="row">
+        <div class="col-sm12" style="text-align:center">
+            <h6 style="color:lightgrey">Create Admin</h6>
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">FirstName</span>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <p class="fw-light">Create User</p>
+                    <i style="color:red;">@createMessage</i>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Name">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">FirstName</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.FirstName">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Username">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">PW</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Password">
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" @onclick="saveNewUser">Save</button>
+                        <button class="btn btn-secondary" @onclick="Discard">Discard</button>
+                    </div>
+                </div>
             </div>
-            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.FirstName">
-        </div>
-        <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
-            </div>
-            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Username">
-        </div>
-        <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">PW</span>
-            </div>
-            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Password">
-        </div>
-        <div>
-            <button class="btn btn-primary" @onclick="saveNewUser">Save</button>
-            <button class="btn btn-secondary" @onclick="Discard">Discard</button>
         </div>
     </div>
 </div>
@@ -56,7 +63,7 @@
 
     private async System.Threading.Tasks.Task saveNewUser()
     {
-        if(
+        if (
             !String.IsNullOrEmpty(targetuser.Name) &&
             !String.IsNullOrEmpty(targetuser.FirstName) &&
             !String.IsNullOrEmpty(targetuser.Username) &&
