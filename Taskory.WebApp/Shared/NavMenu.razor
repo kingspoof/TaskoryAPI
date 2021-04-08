@@ -1,7 +1,7 @@
 ﻿@inject LoginState loginstate;
 
 <div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Taskory</a>
+    <a class="navbar-brand" href="index">Taskory</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,11 +9,22 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="tasks" Match="NavLinkMatch.All">
-                <span class="oi oi-minus" aria-hidden="true"></span> Your tasks
-            </NavLink>
-        </li>
+        @if (!loginstate.SA)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="index" Match="NavLinkMatch.All">
+                    <span class="oi oi-minus" aria-hidden="true"></span> Your tasks
+                </NavLink>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="index" Match="NavLinkMatch.All">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Organisations
+                </NavLink>
+            </li>
+        }
         @if (loginstate.IsAdmin)
         {
             <li class="nav-item px-3">

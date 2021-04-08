@@ -33,19 +33,20 @@ namespace Taskory.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Taskory.API", Version = "v1" });
             });
-            services.AddCors(options =>
+            services.AddCors(setup => setup.AddPolicy("CorsPolicy", builder =>
             {
-                options.AddPolicy("p1",
-                    builder =>
-                    {
-                        builder.WithOrigins("https://localhost");
-                    });
-            });
+                builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            }));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("CorsPolicy");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -57,15 +58,7 @@ namespace Taskory.API
 
             app.UseRouting();
 
-            // global cors policy
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
-
-            app.UseAuthorization();
-
+             
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

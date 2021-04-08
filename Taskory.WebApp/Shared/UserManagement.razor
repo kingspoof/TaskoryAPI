@@ -1,8 +1,13 @@
-﻿@inject LoginState loginstate;
+﻿@using Microsoft.Extensions.Configuration
+@inject LoginState loginstate;
+@inject IConfiguration configuration;
+@inject NavigationManager nav;
+
 
 
 <div class="card">
     <div class="card-body">
+        <i></i>
         <div class="container">
             <div class="row">
                 <div class="col-7 float-left">
@@ -17,7 +22,7 @@
                         <tbody>
                             @foreach (User n in o.Users)
                             {
-                                @if (!n.Deleted)
+                                @if (!n.Deleted && !(Convert.ToInt32(n.AuthentificationTempelate.Split("-")[0]) / 79 == n.ID))
                                 {
                                     <tr @onclick="() => UserClicked(n.ID)">
                                         <td>@n.FirstName @n.Name </td>
@@ -55,10 +60,10 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-5" hidden="@HideCreationWindow">
-                    <p class="fw-light">Create User</p>
                     <div class="card">
                         <div class="card-body">
-                            <p class="fw-light">Edit user</p>
+                            <p class="fw-light">Create User</p>
+                            <i style="color:red;">@createMessage</i>
                             <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
@@ -77,19 +82,30 @@
                                 </div>
                                 <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Username">
                             </div>
-                            <div>
+                            <div class="input-group input-group-sm mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">PW</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Password">
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" @onclick="saveNewUser">Save</button>
+                                <button class="btn btn-secondary" @onclick="Discard">Discard</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <button type="button" @onclick="SaveChanges" class="btn btn-info pull-right">Save</button>
-        <button type="button" @onclick="StartUserCreation" class="btn btn-secondary pull-right" disabled>Create</button>
+        @if (changes)
+        {
+            <button type="button" @onclick="SaveChanges" class="btn btn-danger pull-right">Save</button>
+        }
+        else
+        {
+            <button type="button" @onclick="SaveChanges" class="btn btn-info pull-right">Save</button>
+        }
+        <button type="button" @onclick="StartUserCreation" class="btn btn-secondary pull-right">Create</button>
         <button type="button" @onclick="DeleteCurrentUser" class="btn btn-dark pull-right">Delete</button>
     </div>
 </div>
@@ -103,7 +119,10 @@
     private int currentSelectedUser { get; set; }
     private bool HideEditWindows = true;
     private bool HideCreationWindow = true;
+    private bool changes = false;
 
+
+    private string createMessage { get; set; }
 
     private User targetuser { get; set; }
 
@@ -113,6 +132,7 @@
         currentSelectedUser = n;
         HideEditWindows = false;
         HideCreationWindow = true;
+        changes = true;
         this.targetuser = o.Users.FirstOrDefault(i => i.ID == n);
     }
 
@@ -120,6 +140,8 @@
     {
         targetuser = new User();
         HideCreationWindow = false;
+        HideEditWindows = true;
+
     }
 
     private string CreatePassword()
@@ -137,9 +159,16 @@
     {
         targetuser.Deleted = true;
         HideEditWindows = true;
+        changes = true;
         @*
             HttpClient client = new HttpClient();
             await client.DeleteAsync($"https://localhost:20178/api/User/{targetuser.ID}?transpondercode={loginstate.Transmitioncode}");*@
+    }
+
+    private void Discard()
+    {
+        targetuser = new User();
+        HideCreationWindow = true;
     }
 
     private async System.Threading.Tasks.Task SaveChanges()
@@ -149,10 +178,47 @@
 
         HideEditWindows = true;
 
+        changes = false;
+
         //save changes foreach user
         var json = new StringContent(System.Text.Json.JsonSerializer.Serialize(o));
         Console.WriteLine(json);
-        var result = client.PutAsJsonAsync($"https://localhost:20178/api/Organisations/{o.ID}?transpondercode={loginstate.UserID}", o);
+        var result = client.PutAsJsonAsync($"{configuration["API"]}api/Organisations/{o.ID}?transpondercode={loginstate.UserID}", o);
         Console.WriteLine(result);
+    }
+
+    private async System.Threading.Tasks.Task saveNewUser()
+    {
+
+
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri(configuration["API"]);
+
+        var result = await client.PostAsJsonAsync($"api/User?organisationID={loginstate.OrganisationID}", targetuser);
+        if (result.StatusCode == (System.Net.HttpStatusCode)420)
+        {
+            createMessage = "username already taken";
+        }
+        else
+        {
+            createMessage = "";
+
+            @*targetuser.AuthentificationTempelate = "100-[1234]-100";
+                o.Users.Add(targetuser);*@
+            await Reload();
+
+            HideCreationWindow = true;
+            targetuser = new User();
+
+        }
+    }
+
+    private async System.Threading.Tasks.Task Reload()
+    {
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri(configuration["API"]);
+        var response = await client.GetAsync($"api/Organisations/{loginstate.UserID}");
+        Organisation temp = await response.Content.ReadFromJsonAsync<Organisation>();
+        o = temp;
     }
 }

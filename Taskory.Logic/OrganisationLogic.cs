@@ -29,12 +29,21 @@ namespace Taskory.Logic
         public static Organisation GetOrganisationFromUser(int id)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
-            return context.Organisations.Include("Users").Include("Administrator").SingleOrDefault(o => o.Administrator.ID == id || o.Users.Any(u => u.ID == id));
+            var org = context.Organisations
+                .Include("Tasks")
+                .Include("Users")
+                .Include("Administrator")
+                .SingleOrDefault(o => o.Administrator.ID == id || o.Users.Any(u => u.ID == id));
+            return org;
         }
         public static IEnumerable<Organisation> GetOrganisation()
         {
             using TaskoryDBContext context = new TaskoryDBContext();
-            return context.Organisations.ToList();
+            return context.Organisations
+                .Include("Tasks")
+                .Include("Users")
+                .Include("Administrator").
+                ToList();
         }
 
         //update organisation

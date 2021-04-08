@@ -1,14 +1,31 @@
 ﻿@page "/"
 @inject LoginState loginstate;
 @inject NavigationManager Navigation;
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration configuration
 
-<h1>login</h1>
-
-<label>@notes</label>
-<input type="text" @bind="username" />
-<input type="password" @bind="password" />
-<button class="btn btn-primary" @onclick="login">test</button>
-<i> run this in terminal luci: dotnet watch -p /Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp run</i>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12"></div>
+        <div class="col-sm-12"></div>
+        <div class="col-sm-12"></div>
+        <div class="col-sm-12"></div>
+        <div class="col-sm-12" style="text-align:center;">
+            <h1>login</h1>
+            <label>@notes</label>
+        </div>
+        <div class="col-sm-12" style="text-align:center;">
+            <input type="text" @bind="username" />
+        </div>
+        <div class="col-sm-12" style="text-align:center;">
+            <input type="password" @bind="password" />
+        </div>
+        <div class="col-sm-12" style="text-align:center;">
+            <button class="btn btn-primary" @onclick="login">test</button>
+        </div>
+    </div>
+</div>
+@*<i> run this in terminal luci: dotnet watch -p /Users/lucienkaser/Documents/Development/Taskory.git/Taskory.WebApp run</i>*@
 
 @code {
     private string notes;
@@ -18,9 +35,10 @@
 
     private async System.Threading.Tasks.Task login()
     {
-
+        //Console.WriteLine("API -> " + configuration["API"]);
         HttpClient client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:20178/");
+        client.BaseAddress = new Uri(configuration["API"]);
+
 
         var response = await client.GetAsync($"api/User?username={username}&password={password}");
         Console.Write(response.Content.Headers);
@@ -33,8 +51,13 @@
         {
             loginstate.Username = username;
             loginstate.IsLoggedIn = true;
+            loginstate.OrganisationID = Convert.ToInt32(transmitioncode.Split("-")[2]);
             loginstate.IsAdmin = Convert.ToInt32(transmitioncode.Split("-")[0]) % 79 == 0;
-            loginstate.UserID = Convert.ToInt32(transmitioncode.Split("-")[0]) / 79;
+            if (loginstate.IsAdmin)
+                loginstate.UserID = Convert.ToInt32(transmitioncode.Split("-")[0]) / 79;
+            else
+                loginstate.UserID = Convert.ToInt32(transmitioncode.Split("-")[0]);
+            loginstate.SA = Convert.ToInt32(transmitioncode.Split("-")[0]) == 9973;
             loginstate.Transmitioncode = transmitioncode;
             notes = "login completed";
 

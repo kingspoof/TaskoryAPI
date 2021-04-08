@@ -1,5 +1,8 @@
 ﻿@page "/adminview"
 @inject LoginState loginstate;
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration configuration
+
 
 
 
@@ -14,8 +17,8 @@
     else
     {
         <h3>@org.Name</h3>
-        <TaskManagement o=org/>
-        <UserManagement o=org/>
+        <TaskManagement o=org />
+        <UserManagement o=org />
 
     }
 }
@@ -28,7 +31,7 @@
         Console.WriteLine("Doing something");
 
         HttpClient client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:20178/");
+        client.BaseAddress = new Uri(configuration["API"]);
 
         var response = await client.GetAsync($"api/Organisations/{loginstate.UserID}");
         org = await response.Content.ReadFromJsonAsync<Organisation>();

@@ -23,19 +23,36 @@ namespace Taskory.Logic
 
                     //create user
                     user.Username = user.Username.ToLower();
-                    user.AuthentificationTempelate = Authentification.GenerateTransmitionCode(user);
+
+
+                    //user.AuthentificationTempelate = Authentification.GenerateTransmitionCode(user, organisationID);
                     user.Deleted = false;
                     context.Users.Add(user);
 
-                    //add user to organisation
+                    //add user to organisation if null
                     var org = context.Organisations.Where(o => o.ID == organisationID).FirstOrDefault();
                     if (org.Users == null)
                         org.Users = new List<User>();
-                    org.Users.Add(user);
 
+                    //save the changes to the db
+                    org.Users.Add(user);
                     context.SaveChanges();
+
+                    //give user a new authentificationtempelate if he does not already have one
                     string userid = context.Users.Where(u => u.Username.ToLower().Equals(user.Username.ToLower()))?.FirstOrDefault().ID.ToString();
-                    return userid;
+                    var targetuser = context.Users.FirstOrDefault(u => u.ID == Convert.ToInt32(userid));
+                    if(targetuser != null)
+                        if(targetuser.AuthentificationTempelate.StartsWith("79"))
+                            targetuser.AuthentificationTempelate = $"{Convert.ToInt32(userid) * 79}-[1234]-{organisationID}";
+                        else
+                        targetuser.AuthentificationTempelate =  $"{userid}-[1234]-{organisationID}";
+
+                    //save changes and return the authentification tempelate
+                    context.Users.Update(targetuser);
+                    context.SaveChanges();
+                    return targetuser.AuthentificationTempelate;
+
+
                 }
 
             return "420";
@@ -46,7 +63,7 @@ namespace Taskory.Logic
         {
             using TaskoryDBContext context = new TaskoryDBContext();
             password = Encryption.Encryption.UsingMD5(password);
-            var user = context.Users.Where(u => u.Username.Equals(username) && u.Password.Equals(password));
+            var user = context.Users.Where(u => u.Username.Equals(username) && u.Password.Equals(password) && !u.Deleted);
             if (user.Any())
             {
                 return user.FirstOrDefault().AuthentificationTempelate;

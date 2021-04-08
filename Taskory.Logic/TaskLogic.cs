@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Taskory.DAL.Models;
 using Taskory.DAL;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Taskory.Logic
 {
@@ -10,12 +11,14 @@ namespace Taskory.Logic
     {
 
         //Get Task
-        public static Task GET(int organisationID, int taskID)
+        public static List<Task> GET(int organisationID, int userid)
         {
             using TaskoryDBContext context = new TaskoryDBContext();
             return context.Organisations
-                .Where(o => o.ID == organisationID).FirstOrDefault()?.Tasks
-                    .Where(e => e.ID == taskID).FirstOrDefault();
+                .Include("Tasks")
+                .Include("Users")
+                .FirstOrDefault(o => o.ID == organisationID)
+                ?.Tasks.Where(t => t.UserID == userid).ToList();
         }
 
         public static List<Task> GET(int organisationID)
@@ -55,7 +58,7 @@ namespace Taskory.Logic
             var target = context.Organisations.Where(o => o.ID == organisationID).FirstOrDefault().Tasks.Where(t => t.ID == taskID).FirstOrDefault();
             target.Deleted = true;
             context.SaveChanges();
-                
+
         }
     }
 }

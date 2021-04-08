@@ -1,0 +1,17 @@
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/Taskory.Logic.deps.json
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/Taskory.Logic.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/ref/Taskory.Logic.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/Taskory.Logic.pdb
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/Taskory.DAL.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/Taskory.Encryption.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/Taskory.DAL.pdb
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/bin/Debug/net5.0/Taskory.Encryption.pdb
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.csprojAssemblyReference.cache
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.GeneratedMSBuildEditorConfig.editorconfig
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.AssemblyInfoInputs.cache
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.AssemblyInfo.cs
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.csproj.CoreCompileInputs.cache
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.csproj.CopyComplete
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/ref/Taskory.Logic.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.Logic/obj/Debug/net5.0/Taskory.Logic.pdb

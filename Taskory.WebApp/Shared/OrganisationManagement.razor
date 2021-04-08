@@ -1,0 +1,236 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration configuration
+@inject IJSRuntime JsRuntime
+@inject LoginState loginstate;
+@inject NavigationManager nav;
+@*View all Organisations*@
+
+<div class="content">
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Manage Organisations</h4>
+        </div>
+        <div class="col-sm-6" style="text-align:left;">
+            <button class="btn btn-info" @onclick="() => createOrganisation = !createOrganisation" style="float:right">+</button>
+        </div>
+        <div class="col-sm-12" hidden="@hideCreateOrganisationWindows">
+            <div class="card">
+                <div class="card-body">
+                    <p class="font-weight-light">Create new Organisation</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Name *</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Organisation Name" aria-describedby="basic-addon1" @bind="OToCreate.Name">
+                    </div>
+                    <div>
+                        <button @onclick="CreateNewOrganisation" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @foreach (Organisation org in orgs.OrderBy(n => n.Deleted))
+        {
+
+
+            @if (org.Deleted)
+            {
+                <div class="col-sm-12" style="margin-top:2%;">
+                    <div class="card">
+                        <div class="card-body">
+                            <table>
+                                <tr>
+                                    <td><h4>@org.Name</h4></td>
+                                    <td><button class="btn btn-dark" @onclick="() => { org.Deleted = false; save(org.ID); }">Undelete</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-12" style="margin-top:2%;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Organisation: @org.Name</h4>
+                            <table width="100%">
+                                <tr>
+                                    <td width="50%">
+                                        <h5 style="color:gray">Users</h5>
+                                    </td>
+                                    <td width="50%" style="text-align:right;">
+                                        <button class="btn btn-light" @onclick="() => createAdmin(org.ID)">Create Admin</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-sm table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30%;">Users</th>
+                                        <th style="width:30%;">Username</th>
+                                        <th style="width:30%;">Function</th>
+                                        <th style="width:10%; text-align:center;">Deleted</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (User u in org.Users)
+                                    {
+                                        <tr>
+                                            <td>@u.FirstName @u.Name</td>
+                                            <td>@u.Username</td>
+                                            <td>@((Convert.ToInt32(u.AuthentificationTempelate.Split("-")[0]) / 79 == u.ID) ? "admin" : "user")</td>
+                                            <td style="text-align:center">
+                                                <input type="checkbox" @bind="u.Deleted" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <h5 style="color:gray">Tasks</h5>
+                            <table class="table table-sm table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th style="width:90%;">Name (Description)</th>
+                                        <th style="width:10%; text-align:center">Deleted</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (WebApp.Task t in org.Tasks)
+                                    {
+                                        <tr>
+                                            <td>@t.Name (@t.Descriprion)</td>
+                                            <td style="text-align:center"><input type="checkbox" @bind="t.Deleted" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="btn-group" role="group" aria-label="Basic example" style="float:right;">
+                                <button type="button" class="btn btn-primary" @onclick="() => save(org.ID)">save</button>
+                                <button type="button" class="btn btn-secondary" @onclick="() => cancel(org.ID)">cancel</button>
+                                <button type="button" class="btn btn-danger" @onclick="() => delete(org.ID)">delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    @*Jedoch möchte ich jetzt noch eine weitere View der Applikation hinzufügen,
+        welche es mir, dem Systemadmin, ermöglicht neue Organisationen und Admins zu erstellen.
+        Das ganze soll auch dazu diesen, dass gelöschte Tasks, Users und Organisationen wiederhergestellt werden können.*@
+    List<Organisation> orgs { get; set; }
+
+
+    private bool hideCreateOrganisationWindows { get => !createOrganisation; }
+    private bool createOrganisation = false;
+    private Organisation OToCreate = new Organisation();
+    private User AdminForNewOrganisation = new User();
+    private string createMessage = "";
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        HttpClient client = new HttpClient();
+        if (orgs == null)
+            orgs = new List<Organisation>();
+        @foreach (Organisation o in orgs)
+        {
+            if (o.Tasks == null) o.Tasks = new List<WebApp.Task>();
+            if (o.Users == null) o.Users = new List<User>();
+        }
+
+        client.BaseAddress = new Uri(configuration["API"]);
+        var response = await client.GetAsync("api/Organisations");
+        orgs = await response.Content.ReadFromJsonAsync<List<Organisation>>();
+
+        OToCreate = new Organisation();
+        OToCreate.Users = new List<User>();
+    }
+
+    private async System.Threading.Tasks.Task CreateNewOrganisation()
+    {
+        if (
+            !String.IsNullOrEmpty(OToCreate.Name)
+            && !String.IsNullOrEmpty(AdminForNewOrganisation.Name)
+            && !String.IsNullOrEmpty(AdminForNewOrganisation.FirstName)
+            && !String.IsNullOrEmpty(AdminForNewOrganisation.Username)
+            && !String.IsNullOrEmpty(AdminForNewOrganisation.Password)
+            )
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(configuration["API"]);
+            var response = await client.PostAsJsonAsync($"api/Organisations?transpondercode={loginstate.Transmitioncode}", OToCreate);
+            var orgid = await response.Content.ReadFromJsonAsync<Organisation>();
+            if (orgid != null)
+                await CreateAdmin(orgid.ID);
+            else
+                createMessage = "Error please try again later";
+            orgs.Add(orgid);
+        }
+        else
+        {
+            createMessage = "fill all required fields";
+        }
+    }
+    private async System.Threading.Tasks.Task CreateAdmin(int organisationID)
+    {
+    }
+
+    private async System.Threading.Tasks.Task delete(int id)
+    {
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri(configuration["API"]);
+
+        var o = orgs.FirstOrDefault(n => n.ID == id);
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            // Delete!
+            o.Deleted = true;
+            if (o.Tasks == null) o.Tasks = new List<WebApp.Task>();
+            if (o.Users == null) o.Users = new List<User>();
+
+
+            @foreach (var n in o.Tasks)
+                n.Deleted = true;
+            @foreach (var n in o.Users)
+                n.Deleted = true;
+
+
+
+            client.BaseAddress = new Uri(configuration["API"]);
+            var result = await client.PutAsJsonAsync($"api/Organisations/{id}?transpondercode={loginstate.Transmitioncode}", o);
+            o.Deleted = true;
+        }
+    }
+    private async System.Threading.Tasks.Task cancel(int id)
+    {
+        await reload(id);
+    }
+    private async System.Threading.Tasks.Task save(int id)
+    {
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri(configuration["API"]);
+        var o = orgs.FirstOrDefault(n => n.ID == id);
+        var result = await client.PutAsJsonAsync($"api/Organisations/{id}?transpondercode={loginstate.Transmitioncode}", o);
+        await reload(id);
+    }
+    private async System.Threading.Tasks.Task reload(int id)
+    {
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri(configuration["API"]);
+
+        var target = orgs.FirstOrDefault(n => n.ID == id);
+        var result = await client.GetAsync($"api/Organisations/{id}");
+        Organisation temp = await result.Content.ReadFromJsonAsync<Organisation>();
+        target = temp;
+    }
+    private void createAdmin(int organisationid)
+    {
+        nav.NavigateTo($"/createadmin/{organisationid}");
+    }
+}

@@ -77,7 +77,7 @@ namespace Taskory.DAL.Migrations
 
                     b.HasIndex("OrganisationID");
 
-                    b.ToTable("Task");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Taskory.DAL.Models.User", b =>

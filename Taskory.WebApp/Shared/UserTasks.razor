@@ -1,0 +1,70 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration configuration
+@inject LoginState loginstate;
+
+<div class="container">
+    <div class="row">
+        @foreach (WebApp.Task t in o.Tasks.Where(t => t.UserID == loginstate.UserID).OrderBy(t => t.StartDate))
+        {
+            @if (t.StartDate >= DateTime.Now)
+            {
+                <div class="card" style="width:100%">
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-3">@t.Name</div>
+                                <div class="col-sm-12 col-md-6 col-lg-3">@t.Descriprion</div>
+                                <div class="col-sm-12 col-md-6 col-lg-3">@t.StartDate.ToString("dd.MM.yyyy")</div>
+                                <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <button class="btn btn-info" @onclick="() => MarkTaskAsCompleted(t.ID)">Completed</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card" style="width:100%; background-color:lightpink">
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-3">@t.Name</div>
+                                <div class="col-sm-12 col-md-6 col-lg-3">@t.Descriprion</div>
+                                <div class="col-sm-12 col-md-6 col-lg-3">@t.StartDate.ToString("dd.MM.yyyy")</div>
+                                <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <button class="btn btn-info" @onclick="() => MarkTaskAsCompleted(t.ID)">Completed</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Organisation o { get; set; }
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        if (o.Tasks == null)
+            o.Tasks = new List<WebApp.Task>();
+    }
+    private void MarkTaskAsCompleted(int id)
+    {
+        Console.WriteLine("Update ");
+        var task = o.Tasks.FirstOrDefault(t => t.ID == id);
+        task.StartDate = task.StartDate.AddDays(task.RepeatAfterXDays);
+        Console.WriteLine(task.StartDate);
+        SaveChanges();
+    }
+    private void SaveChanges()
+    {
+        HttpClient client = new HttpClient();
+        var result = client.PutAsJsonAsync($"{configuration["API"]}api/Organisations/{o.ID}?transpondercode={loginstate.UserID}", o);
+        Console.WriteLine(result);
+    }
+}

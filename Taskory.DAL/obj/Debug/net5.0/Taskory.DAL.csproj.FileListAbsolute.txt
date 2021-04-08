@@ -1,0 +1,15 @@
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/bin/Debug/net5.0/Taskory.DAL.deps.json
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/bin/Debug/net5.0/Taskory.DAL.runtimeconfig.json
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/bin/Debug/net5.0/Taskory.DAL.runtimeconfig.dev.json
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/bin/Debug/net5.0/Taskory.DAL.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/bin/Debug/net5.0/ref/Taskory.DAL.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/bin/Debug/net5.0/Taskory.DAL.pdb
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.csprojAssemblyReference.cache
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.AssemblyInfoInputs.cache
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.AssemblyInfo.cs
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.csproj.CoreCompileInputs.cache
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/ref/Taskory.DAL.dll
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.pdb
+/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.DAL/obj/Debug/net5.0/Taskory.DAL.genruntimeconfig.cache

@@ -1,0 +1,203 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/lucienkaser/Development/Taskory/Taskory.Logic/Taskory.Logic.csproj": {}
+  },
+  "projects": {
+    "/Users/lucienkaser/Development/Taskory/Taskory.DAL/Taskory.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/lucienkaser/Development/Taskory/Taskory.DAL/Taskory.DAL.csproj",
+        "projectName": "Taskory.DAL",
+        "projectPath": "/Users/lucienkaser/Development/Taskory/Taskory.DAL/Taskory.DAL.csproj",
+        "packagesPath": "/Users/lucienkaser/.nuget/packages/",
+        "outputPath": "/Users/lucienkaser/Development/Taskory/Taskory.DAL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/lucienkaser/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/lucienkaser/Development/Taskory/Taskory.Encryption/Taskory.Encryption.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/lucienkaser/Development/Taskory/Taskory.Encryption/Taskory.Encryption.csproj",
+        "projectName": "Taskory.Encryption",
+        "projectPath": "/Users/lucienkaser/Development/Taskory/Taskory.Encryption/Taskory.Encryption.csproj",
+        "packagesPath": "/Users/lucienkaser/.nuget/packages/",
+        "outputPath": "/Users/lucienkaser/Development/Taskory/Taskory.Encryption/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/lucienkaser/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/lucienkaser/Development/Taskory/Taskory.Logic/Taskory.Logic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/lucienkaser/Development/Taskory/Taskory.Logic/Taskory.Logic.csproj",
+        "projectName": "Taskory.Logic",
+        "projectPath": "/Users/lucienkaser/Development/Taskory/Taskory.Logic/Taskory.Logic.csproj",
+        "packagesPath": "/Users/lucienkaser/.nuget/packages/",
+        "outputPath": "/Users/lucienkaser/Development/Taskory/Taskory.Logic/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/lucienkaser/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "/Users/lucienkaser/Development/Taskory/Taskory.DAL/Taskory.DAL.csproj": {
+                "projectPath": "/Users/lucienkaser/Development/Taskory/Taskory.DAL/Taskory.DAL.csproj"
+              },
+              "/Users/lucienkaser/Development/Taskory/Taskory.Encryption/Taskory.Encryption.csproj": {
+                "projectPath": "/Users/lucienkaser/Development/Taskory/Taskory.Encryption/Taskory.Encryption.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

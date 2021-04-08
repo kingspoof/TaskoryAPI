@@ -1,0 +1,91 @@
+﻿@page "/createadmin/{oid:int}"
+
+@using Microsoft.Extensions.Configuration
+@inject NavigationManager nav;
+@inject IConfiguration configuration;
+@inject LoginState loginstate;
+
+<h3>@oid</h3>
+
+<div class="card">
+    <div class="card-body">
+        <p class="fw-light">Create User</p>
+        <i style="color:red;">@createMessage</i>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Name">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">FirstName</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.FirstName">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Username</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Username">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">PW</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="targetuser.Password">
+        </div>
+        <div>
+            <button class="btn btn-primary" @onclick="saveNewUser">Save</button>
+            <button class="btn btn-secondary" @onclick="Discard">Discard</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int oid { get; set; }
+
+    private User targetuser { get; set; }
+    private string createMessage = "";
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        targetuser = new User();
+    }
+
+    private async System.Threading.Tasks.Task saveNewUser()
+    {
+        if(
+            !String.IsNullOrEmpty(targetuser.Name) &&
+            !String.IsNullOrEmpty(targetuser.FirstName) &&
+            !String.IsNullOrEmpty(targetuser.Username) &&
+            !String.IsNullOrEmpty(targetuser.Password)
+            )
+        {
+            targetuser.AuthentificationTempelate = "79";
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(configuration["API"]);
+            var result = await client.PostAsJsonAsync($"api/User?organisationID={oid}", targetuser);
+            if (result.StatusCode == (System.Net.HttpStatusCode)420)
+            {
+                createMessage = "username already taken";
+            }
+            else
+            {
+                nav.NavigateTo("/Index");
+            }
+        }
+        else
+        {
+            createMessage = "fill all required fields";
+        }
+    }
+
+    private void Discard()
+    {
+        nav.NavigateTo("/Index");
+    }
+
+}

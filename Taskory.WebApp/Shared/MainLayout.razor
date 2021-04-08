@@ -21,3 +21,16 @@ else
 {
     @Body
 }
+
+
+@code {
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        if (!loginstate.IsLoggedIn)
+        {
+            Console.Write("Rederect to login");
+            Navigation.NavigateTo("/");
+        }
+    }
+}

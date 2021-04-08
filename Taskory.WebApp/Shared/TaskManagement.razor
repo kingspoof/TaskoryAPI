@@ -1,30 +1,51 @@
 ﻿@inject LoginState loginstate;
+@using Microsoft.Extensions.Configuration
+@using Taskory.WebApp;
+@inject IConfiguration configuration
+
 
 
 <div class="card">
     <div class="card-body">
-
+        <i @bind="CreateMessasge"></i>
         <div class="container">
             <div class="row">
                 <div class="col-sm-7">
-                    <div class="card">
-                        <div class="card-body">
-                            @foreach (var t in o.Tasks)
+                    <table class="table table-hover table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Repeat after n days</th>
+                                <th>Next</th>
+                                <th>End</th>
+                                <th>User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var t in o.Tasks.Where(n => !n.Deleted))
                             {
-                                <div class="card">
-                                    <div class="card-body">
-                                        @t.Name
-                                    </div>
-                                </div>
+                                <tr @onclick="() => TaskClicked(t.ID)">
+                                    <td>@t.Name</td>
+                                    <td>@t.Descriprion</td>
+                                    <td>@t.RepeatAfterXDays</td>
+                                    <td>@t.StartDate.ToString("dd.MM.yyyy")</td>
+                                    @*<td>@(t.EndDate < DateTime.Now ? "-" : t.EndDate.ToString("dd.MM.yyyy"))</td>*@
+                                    <td>@o.Users.Where(n => n.ID == t.UserID).FirstOrDefault().Username</td>
+                                </tr>
                             }
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="col-sm-5">
                     <div class="card" hidden="@HideCreate">
                         <div class="card-body">
                             <div class="card-body">
-                                <p class="fw-light">Create Task</p>
+                                <p class="fw-light">@(create? "Create" : "Edit" ) Task</p>
+                                @if (create)
+                                {
+                                    <i @bind="CreateMessage"></i>
+                                }
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">*Name</span>
@@ -45,24 +66,32 @@
                                 </div>
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">*Start</span>
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">*Next</span>
                                     </div>
-                                    <input type="date" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.StartDate">
+                                    <input @bind="TaskToCreate.StartDate" @bind:format="dd.MM.yyyy" />
                                 </div>
-                                <div class="input-group input-group-sm mb-3">
+                                @*<div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">End</span>
                                     </div>
-                                    <input type="date" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.EndDate">
-                                </div>
+                                    <input @bind="TaskToCreate.EndDate" @bind:format="dd.MM.yyyy" />
+                                </div>*@
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">*User</span>
                                     </div>
-                                    <input type="number" class="form-control" aria-label="Name" aria-describedby="inputGroup-sizing-sm" @bind="TaskToCreate.UserID">
+                                    <select class="form-control selectpicker" @bind="TaskToCreate.UserID">
+                                        @foreach (var user in o.Users.Where(n => !n.Deleted))
+                                        {
+                                            <option value="@user.ID">@user.Username</option>
+                                            // Blazor needs to know what values it binds to!
+                                        }
+                                    </select>
                                 </div>
-                                <button class="btn btn-primary" @onclick="SaveTask">take</button>
-                                <button class="btn btn-secondary" @onclick="DiscardTask">leave</button>
+                                <div hidden="@HideCreateButtons">
+                                    <button class="btn btn-primary" @onclick="SaveTask">Save</button>
+                                    <button class="btn btn-secondary" @onclick="DiscardTask">Discard</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -70,9 +99,17 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <button class="btn btn-info">Save</button>
+                    @if (changes)
+                    {
+
+                        <button class="btn btn-danger" @onclick="SaveChanges">Save</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-info" @onclick="SaveChanges">Save</button>
+                    }
                     <button class="btn btn-secondary" @onclick="StartTaskCreation">Create</button>
-                    <button class="btn btn-dark">Delete</button>
+                    <button class="btn btn-dark" @onclick="DeleteSelected">Delete</button>
                 </div>
             </div>
         </div>
@@ -83,51 +120,132 @@
 @code {
     [Parameter]
     public Organisation o { get; set; }
+    public bool changes = false;
 
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
         if (o.Tasks == null)
-            o.Tasks = new List<WebApp.Task>();
+            o.Tasks = new List<Taskory.WebApp.Task>();
         TaskToCreate = new WebApp.Task();
+        TaskToCreate.StartDate = new DateTime();
+        TaskToCreate.EndDate = new DateTime();
     }
 
-    
+
     #region CreateTask
-    public Taskory.WebApp.Task TaskToCreate { get; set; }
+    private Taskory.WebApp.Task TaskToCreate { get; set; } = new WebApp.Task();
     private string CreateMessage = "";
-    public bool HideCreate = true;
+    private bool HideCreate = true;
+    private bool HideCreateButtons = false;
+    private bool create = false;
+    private bool edit = false;
+
 
     private void StartTaskCreation()
     {
+        changes = true;
         TaskToCreate = new WebApp.Task();
         HideCreate = false;
+        create = true;
+        edit = false;
+        HideCreateButtons = false;
     }
+
     private void SaveTask()
     {
 
-        Console.WriteLine("1 -> " + !String.IsNullOrEmpty(TaskToCreate.Name));
-        Console.WriteLine("2 -> " + (TaskToCreate.RepeatAfterXDays > 0).ToString());
-        Console.WriteLine("3 -> " + (TaskToCreate.StartDate > DateTime.Now.AddMonths(-5)).ToString());
-        Console.WriteLine("4 -> " + (o.Users.Any(u => u.ID == TaskToCreate.ID)).ToString());
+
+        bool stringValid = !String.IsNullOrEmpty(TaskToCreate.Name);
+        bool RAXDValid = TaskToCreate.RepeatAfterXDays > 0;
+        bool StartValid = TaskToCreate.StartDate > DateTime.Now.AddMonths(-5);
+        bool userValid = (o.Users.Any(u => u.ID == TaskToCreate.UserID));
 
 
-        if (!String.IsNullOrEmpty(TaskToCreate.Name)
-            && TaskToCreate.RepeatAfterXDays > 0
-            && TaskToCreate.StartDate > DateTime.Now.AddMonths(-5)
-            && o.Users.Any(u => u.ID == TaskToCreate.ID))
+        if (stringValid && RAXDValid && StartValid && userValid)
         {
-            o.Tasks.Add(TaskToCreate);
+            if (create)
+            {
+                o.Tasks.Add(TaskToCreate);
+                Console.WriteLine("Adding task");
+                HideCreate = true;
+                SaveChanges();
+            }
         }
         else
         {
-            CreateMessage = "Fille required field!";
+            Console.WriteLine("Wrong");
+            CreateMessage = "Fill required field!";
         }
+        changes = true;
     }
+
+
     private void DiscardTask()
     {
         HideCreate = true;
+        edit = true;
+        create = false;
         TaskToCreate = new WebApp.Task();
     }
     #endregion
+
+    #region EditTask
+    private WebApp.Task selectedTask { get; set; } = new WebApp.Task();
+
+    public void TaskClicked(int id)
+    {
+        changes = true;
+        if (id == 0)
+        {
+            CreateMessage = "Save before editing newly created task";
+        }
+        else
+        {
+            this.TaskToCreate = o.Tasks.FirstOrDefault(t => t.ID == id);
+            HideCreate = false;
+            HideCreateButtons = true;
+            edit = true;
+        }
+    }
+    public void DeleteSelected()
+    {
+        changes = true;
+        if (TaskToCreate.ID > 0)
+        {
+            TaskToCreate.Deleted = true;
+            HideCreate = true;
+            edit = false;
+        }
+    }
+    #endregion
+
+    #region SaveChanges()
+    private async System.Threading.Tasks.Task SaveChanges()
+    {
+        //send changes to the api with the organisation as json
+        HttpClient client = new HttpClient();
+
+        HideCreate = true;
+
+        //save changes foreach user
+        var json = new StringContent(System.Text.Json.JsonSerializer.Serialize(o));
+        Console.WriteLine(json);
+        var result = await client.PutAsJsonAsync($"{configuration["API"]}api/Organisations/{o.ID}?transpondercode={loginstate.UserID}", o);
+        Console.WriteLine(result);
+
+        await Reload();
+        changes = false;
+    }
+    #endregion
+
+    private async System.Threading.Tasks.Task Reload()
+    {
+        HttpClient client = new HttpClient();
+        client.BaseAddress = new Uri(configuration["API"]);
+        var response = await client.GetAsync($"api/Organisations/{loginstate.UserID}");
+        Organisation temp = await response.Content.ReadFromJsonAsync<Organisation>();
+        o = temp;
+        changes = false;
+    }
 }

@@ -29,7 +29,7 @@ namespace Taskory.API.Controllers
         }
 
         [HttpGet("{organisationID}/{taskID}")]
-        public Task Get(int organisationID, int taskID, string transpondercode)
+        public List<Task> Get(int organisationID, int taskID, string transpondercode)
         {
             if (Authentification.HasPermission(transpondercode, ReturnCodes.User))
                 return TaskLogic.GET(organisationID, taskID);

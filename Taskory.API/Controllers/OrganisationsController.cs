@@ -29,7 +29,10 @@ namespace Taskory.API.Controllers
         public Organisation Get(int id, string transpondercode)
         {
             if (Authentification.HasPermission(transpondercode, RequiredPermission))
-                return OrganisationLogic.GetOrganisationFromUser(id);
+            {
+                var org = OrganisationLogic.GetOrganisationFromUser(id);
+                return org;
+            }
             else
                 HttpContext.Response.StatusCode = 403;
             return null;
@@ -37,13 +40,13 @@ namespace Taskory.API.Controllers
 
         // POST api/values -> Create Organisation
         [HttpPost]
-        public void Post(string transpondercode, [FromBody] Organisation value)
+        public Organisation Post(string transpondercode, [FromBody] Organisation value)
         {
             //if(Authentification.)
             if (Authentification.HasPermission(transpondercode, RequiredPermission))
-                OrganisationLogic.CreateOrganisation(value);
+                return OrganisationLogic.CreateOrganisation(value);
             else
-                HttpContext.Response.StatusCode = 403;
+                return null;
         }
 
         // PUT api/values/5-> Alter Organisation

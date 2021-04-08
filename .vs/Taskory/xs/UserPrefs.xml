@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{BA125E4A-605D-481E-8263-014DA318B47F}|Default">
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Taskory" expanded="True">
+            <Node name="Taskory.API" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
+            <Node name="Taskory.Logic" expanded="True" />
+            <Node name="Taskory.WebApp" expanded="True" selected="True">
+              <Node name="Pages" expanded="True" />
+              <Node name="Properties" expanded="True" />
+              <Node name="Shared" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.Taskory.WebApp PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/lucienkaser/Documents/Development/Taskory.git/Taskory.API/Controllers/UserController.cs" relfile="Taskory.API/Controllers/UserController.cs" line="37" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Taskory.API PreferredExecutionTarget="/Applications/Safari.app" />
+</Properties>
