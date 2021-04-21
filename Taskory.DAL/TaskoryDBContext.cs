@@ -8,7 +8,7 @@ namespace Taskory.DAL
     public class TaskoryDBContext : DbContext
     {
         public TaskoryDBContext()
-            : base(new DbContextOptionsBuilder<TaskoryDBContext>().UseSqlServer("Server=den1.mssql8.gear.host;Database=Taskory;User Id=taskory;Password=Cl421Mx__Vmo").Options)
+            : base(new DbContextOptionsBuilder<TaskoryDBContext>().UseSqlServer("Server=den1.mssql8.gear.host;Database=Taskory;User Id=taskory;Password=").Options)
         {
             this.Database.EnsureCreated();
         }
